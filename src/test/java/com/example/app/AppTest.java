@@ -1,211 +1,150 @@
-package com.example.app;
+package com.example.library;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AppTest {
 
-    // ==================== BASIC TESTS ====================
-
-    // Test 1: Greet with correct name
+    // Tests for isBookAvailable
     @Test
-    public void testGreet() {
-        String result = App.greet("DevOps Student");
-        assertEquals("Hello, DevOps Student! DevOps Pipeline is Running Successfully.", result);
+    public void testIsBookAvailable_ValidBook() {
+        assertTrue(App.isBookAvailable("Java Programming"));
     }
 
-    // Test 2: Greet with different name
     @Test
-    public void testGreetWithDifferentName() {
-        String result = App.greet("ABA");
-        assertEquals("Hello, ABA! DevOps Pipeline is Running Successfully.", result);
+    public void testIsBookAvailable_EmptyName() {
+        assertFalse(App.isBookAvailable(""));
     }
 
-    // Test 3: Get version
     @Test
-    public void testGetVersion() {
-        String version = App.getVersion();
-        assertEquals("v1.0", version);
+    public void testIsBookAvailable_NullName() {
+        assertFalse(App.isBookAvailable(null));
     }
 
-    // Test 4: Get pipeline status
+    // Tests for calculateFine
     @Test
-    public void testGetPipelineStatus() {
-        String status = App.getPipelineStatus();
-        assertEquals("Pipeline is Active and Running", status);
+    public void testCalculateFine_FiveDays() {
+        assertEquals(25.0, App.calculateFine(5), 0.01);
     }
 
-    // ==================== CALCULATE AVERAGE TESTS ====================
-
-    // Test 5: Average of normal marks
     @Test
-    public void testCalculateAverage() {
-        double[] marks = {85, 90, 78, 92, 88};
-        double result = App.calculateAverage(marks);
-        assertEquals(86.6, result, 0.01);
+    public void testCalculateFine_ZeroDays() {
+        assertEquals(0.0, App.calculateFine(0), 0.01);
     }
 
-    // Test 6: Average of equal marks
     @Test
-    public void testCalculateAverageEqual() {
-        double[] marks = {100, 100, 100};
-        double result = App.calculateAverage(marks);
-        assertEquals(100.0, result, 0.01);
+    public void testCalculateFine_NegativeDays() {
+        assertEquals(0.0, App.calculateFine(-3), 0.01);
     }
 
-    // Test 7: Average of single mark
     @Test
-    public void testCalculateAverageSingle() {
-        double[] marks = {75};
-        double result = App.calculateAverage(marks);
-        assertEquals(75.0, result, 0.01);
+    public void testCalculateFine_TenDays() {
+        assertEquals(50.0, App.calculateFine(10), 0.01);
     }
 
-    // Test 8: Average of empty array
+    // Tests for getMemberCategory
     @Test
-    public void testCalculateAverageEmpty() {
-        double[] marks = {};
-        double result = App.calculateAverage(marks);
-        assertEquals(0.0, result, 0.01);
+    public void testGetMemberCategory_Regular() {
+        assertEquals("Regular", App.getMemberCategory(3));
     }
 
-    // ==================== GET GRADE TESTS ====================
-
-    // Test 9: Grade A (90 and above)
     @Test
-    public void testGetGradeA() {
-        String grade = App.getGrade(95);
-        assertEquals("A", grade);
+    public void testGetMemberCategory_Silver() {
+        assertEquals("Silver", App.getMemberCategory(8));
     }
 
-    // Test 10: Grade A boundary (exactly 90)
     @Test
-    public void testGetGradeABoundary() {
-        String grade = App.getGrade(90);
-        assertEquals("A", grade);
+    public void testGetMemberCategory_Gold() {
+        assertEquals("Gold", App.getMemberCategory(15));
     }
 
-    // Test 11: Grade B (80-89)
     @Test
-    public void testGetGradeB() {
-        String grade = App.getGrade(85);
-        assertEquals("B", grade);
+    public void testGetMemberCategory_BoundaryRegular() {
+        assertEquals("Regular", App.getMemberCategory(5));
     }
 
-    // Test 12: Grade C (70-79)
     @Test
-    public void testGetGradeC() {
-        String grade = App.getGrade(75);
-        assertEquals("C", grade);
+    public void testGetMemberCategory_BoundarySilver() {
+        assertEquals("Silver", App.getMemberCategory(6));
     }
 
-    // Test 13: Grade D (60-69)
+    // Tests for getTotalBooks
     @Test
-    public void testGetGradeD() {
-        String grade = App.getGrade(65);
-        assertEquals("D", grade);
+    public void testGetTotalBooks() {
+        assertEquals(250, App.getTotalBooks(120, 80, 50));
     }
 
-    // Test 14: Grade F (below 60)
     @Test
-    public void testGetGradeF() {
-        String grade = App.getGrade(45);
-        assertEquals("F", grade);
+    public void testGetTotalBooks_Zero() {
+        assertEquals(0, App.getTotalBooks(0, 0, 0));
     }
 
-    // ==================== GET RESULT TESTS ====================
-
-    // Test 15: Result PASS (above 50)
     @Test
-    public void testGetResultPass() {
-        String result = App.getResult(75);
-        assertEquals("PASS", result);
+    public void testGetTotalBooks_Large() {
+        assertEquals(1000, App.getTotalBooks(500, 300, 200));
     }
 
-    // Test 16: Result PASS (exactly 50)
+    // Tests for formatAuthorName
     @Test
-    public void testGetResultPassBoundary() {
-        String result = App.getResult(50);
-        assertEquals("PASS", result);
+    public void testFormatAuthorName_Valid() {
+        assertEquals("James Gosling", App.formatAuthorName("james", "gosling"));
     }
 
-    // Test 17: Result FAIL (below 50)
     @Test
-    public void testGetResultFail() {
-        String result = App.getResult(30);
-        assertEquals("FAIL", result);
+    public void testFormatAuthorName_EmptyFirst() {
+        assertEquals("Unknown Author", App.formatAuthorName("", "gosling"));
     }
 
-    // ==================== IS PASSED TESTS ====================
-
-    // Test 18: isPassed true
     @Test
-    public void testIsPassedTrue() {
-        assertTrue(App.isPassed(75));
+    public void testFormatAuthorName_EmptyLast() {
+        assertEquals("Unknown Author", App.formatAuthorName("james", ""));
     }
 
-    // Test 19: isPassed false
+    // Tests for canBorrow
     @Test
-    public void testIsPassedFalse() {
-        assertFalse(App.isPassed(30));
+    public void testCanBorrow_Eligible() {
+        assertTrue(App.canBorrow(true, 0));
     }
 
-    // Test 20: isPassed boundary (exactly 50)
     @Test
-    public void testIsPassedBoundary() {
-        assertTrue(App.isPassed(50));
+    public void testCanBorrow_HasFine() {
+        assertFalse(App.canBorrow(true, 50));
     }
 
-    // ==================== CALCULATE PERCENTAGE TESTS ====================
-
-    // Test 21: Normal percentage
     @Test
-    public void testCalculatePercentage() {
-        double result = App.calculatePercentage(450, 500);
-        assertEquals(90.0, result, 0.01);
+    public void testCanBorrow_NotMember() {
+        assertFalse(App.canBorrow(false, 0));
     }
 
-    // Test 22: Full marks percentage
+    // Tests for getDiscount
     @Test
-    public void testCalculatePercentageFullMarks() {
-        double result = App.calculatePercentage(500, 500);
-        assertEquals(100.0, result, 0.01);
+    public void testGetDiscount_Senior() {
+        assertEquals(20, App.getDiscount("Senior"));
     }
 
-    // Test 23: Zero marks percentage
     @Test
-    public void testCalculatePercentageZeroMarks() {
-        double result = App.calculatePercentage(0, 500);
-        assertEquals(0.0, result, 0.01);
+    public void testGetDiscount_Student() {
+        assertEquals(15, App.getDiscount("Student"));
     }
 
-    // Test 24: Zero total marks (invalid)
     @Test
-    public void testCalculatePercentageZeroTotal() {
-        double result = App.calculatePercentage(100, 0);
-        assertEquals(0.0, result, 0.01);
+    public void testGetDiscount_Regular() {
+        assertEquals(5, App.getDiscount("Regular"));
     }
 
-    // ==================== GET TOP STUDENT TESTS ====================
-
-    // Test 25: First student is top
+    // Tests for getMostBorrowedBook
     @Test
-    public void testGetTopStudentFirst() {
-        String result = App.getTopStudent("Aishwarya", 95, "Rahul", 88);
-        assertEquals("Aishwarya", result);
+    public void testGetMostBorrowedBook_First() {
+        assertEquals("Java", App.getMostBorrowedBook("Java", 80, "Python", 72));
     }
 
-    // Test 26: Second student is top
     @Test
-    public void testGetTopStudentSecond() {
-        String result = App.getTopStudent("Aishwarya", 80, "Rahul", 92);
-        assertEquals("Rahul", result);
+    public void testGetMostBorrowedBook_Second() {
+        assertEquals("Python", App.getMostBorrowedBook("Java", 45, "Python", 72));
     }
 
-    // Test 27: Both students are equal
     @Test
-    public void testGetTopStudentEqual() {
-        String result = App.getTopStudent("Aishwarya", 90, "Rahul", 90);
-        assertEquals("Both are equal", result);
+    public void testGetMostBorrowedBook_Equal() {
+        assertEquals("Both equally borrowed", App.getMostBorrowedBook("Java", 50, "Python", 50));
     }
 }
