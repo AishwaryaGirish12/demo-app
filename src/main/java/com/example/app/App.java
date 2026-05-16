@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.library;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,118 +8,138 @@ public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
-        String name = "DevOps Student";
+        logger.info("Library Management System Started.");
+        System.out.println("=== Library Management System ===");
 
-        if (StringUtils.isNotBlank(name)) {
-            String message = greet(name);
-            logger.info(message);
-            System.out.println(message);
-        } else {
-            logger.error("Name is blank or empty!");
+        // Book availability
+        System.out.println("Is 'Java Programming' available? : " + isBookAvailable("Java Programming"));
+        System.out.println("Is '' available?                 : " + isBookAvailable(""));
+
+        // Fine calculation
+        System.out.println("Fine for 5 days late             : Rs." + calculateFine(5));
+        System.out.println("Fine for 0 days late             : Rs." + calculateFine(0));
+
+        // Member category
+        System.out.println("Category (3 books)               : " + getMemberCategory(3));
+        System.out.println("Category (8 books)               : " + getMemberCategory(8));
+        System.out.println("Category (15 books)              : " + getMemberCategory(15));
+
+        // Book count
+        System.out.println("Total books (Fiction:120)        : " + getTotalBooks(120, 80, 50));
+
+        // Author name format
+        System.out.println("Format Author                    : " + formatAuthorName("james", "gosling"));
+
+        // Borrow eligibility
+        System.out.println("Can borrow (no dues)             : " + canBorrow(true, 0));
+        System.out.println("Can borrow (has dues)            : " + canBorrow(true, 50));
+
+        // Discount
+        System.out.println("Discount for Senior              : " + getDiscount("Senior") + "%");
+        System.out.println("Discount for Student             : " + getDiscount("Student") + "%");
+        System.out.println("Discount for Regular             : " + getDiscount("Regular") + "%");
+
+        // Most borrowed
+        System.out.println("Most Borrowed Book               : " + getMostBorrowedBook("Java", 45, "Python", 72));
+
+        System.out.println("=================================");
+        logger.info("Library Management System Completed Successfully.");
+    }
+
+    // Method 1: Check if book is available
+    public static boolean isBookAvailable(String bookName) {
+        if (StringUtils.isBlank(bookName)) {
+            logger.warn("Book name is blank or null!");
+            return false;
         }
-
-        System.out.println("App Version      : " + getVersion());
-        System.out.println("Pipeline Status  : " + getPipelineStatus());
-
-        // Student Grade System Examples
-        double[] marks = {85, 90, 78, 92, 88};
-        double avg = calculateAverage(marks);
-        System.out.println("Average Marks    : " + avg);
-        System.out.println("Grade            : " + getGrade(avg));
-        System.out.println("Result           : " + getResult(avg));
-        System.out.println("Is Pass(75)      : " + isPassed(75));
-        System.out.println("Is Pass(30)      : " + isPassed(30));
-        System.out.println("Percentage(450,500): " + calculatePercentage(450, 500) + "%");
-        System.out.println("Top Student      : " + getTopStudent("Aishwarya", 95, "Rahul", 88));
+        logger.info("Checking availability for: " + bookName);
+        return true;
     }
 
-    // Method 1: Greet user
-    public static String greet(String name) {
-        return "Hello, " + name + "! DevOps Pipeline is Running Successfully.";
-    }
-
-    // Method 2: Get app version
-    public static String getVersion() {
-        return "v1.0";
-    }
-
-    // Method 3: Get pipeline status
-    public static String getPipelineStatus() {
-        return "Pipeline is Active and Running";
-    }
-
-    // Method 4: Calculate average of marks array
-    public static double calculateAverage(double[] marks) {
-        if (marks == null || marks.length == 0) {
-            logger.warn("Marks array is empty or null!");
+    // Method 2: Calculate fine (Rs.5 per day)
+    public static double calculateFine(int daysLate) {
+        if (daysLate <= 0) {
+            logger.info("No fine applicable.");
             return 0.0;
         }
-        double sum = 0;
-        for (double mark : marks) {
-            sum += mark;
-        }
-        double average = sum / marks.length;
-        logger.info("Calculated average: " + average);
-        return Math.round(average * 100.0) / 100.0;
+        double fine = daysLate * 5.0;
+        logger.info("Fine calculated: Rs." + fine + " for " + daysLate + " days");
+        return fine;
     }
 
-    // Method 5: Get grade based on marks
-    // A: 90-100, B: 80-89, C: 70-79, D: 60-69, F: below 60
-    public static String getGrade(double marks) {
-        if (marks >= 90) {
-            logger.info("Grade A awarded for marks: " + marks);
-            return "A";
-        } else if (marks >= 80) {
-            logger.info("Grade B awarded for marks: " + marks);
-            return "B";
-        } else if (marks >= 70) {
-            logger.info("Grade C awarded for marks: " + marks);
-            return "C";
-        } else if (marks >= 60) {
-            logger.info("Grade D awarded for marks: " + marks);
-            return "D";
+    // Method 3: Get member category based on books borrowed
+    // 1-5: Regular, 6-10: Silver, 11+: Gold
+    public static String getMemberCategory(int booksBorrowed) {
+        if (booksBorrowed >= 11) {
+            logger.info("Gold member: " + booksBorrowed + " books");
+            return "Gold";
+        } else if (booksBorrowed >= 6) {
+            logger.info("Silver member: " + booksBorrowed + " books");
+            return "Silver";
         } else {
-            logger.warn("Grade F awarded for marks: " + marks);
-            return "F";
+            logger.info("Regular member: " + booksBorrowed + " books");
+            return "Regular";
         }
     }
 
-    // Method 6: Get Pass or Fail result
-    // Pass if marks >= 50, Fail if below 50
-    public static String getResult(double marks) {
-        if (marks >= 50) {
-            return "PASS";
+    // Method 4: Get total books in library
+    public static int getTotalBooks(int fiction, int nonFiction, int reference) {
+        int total = fiction + nonFiction + reference;
+        logger.info("Total books in library: " + total);
+        return total;
+    }
+
+    // Method 5: Format author name
+    public static String formatAuthorName(String firstName, String lastName) {
+        if (StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName)) {
+            logger.warn("Author name is invalid!");
+            return "Unknown Author";
+        }
+        String formatted = StringUtils.capitalize(firstName) + " " + StringUtils.capitalize(lastName);
+        logger.info("Formatted author name: " + formatted);
+        return formatted;
+    }
+
+    // Method 6: Check if member can borrow
+    public static boolean canBorrow(boolean isMember, double pendingFine) {
+        if (!isMember) {
+            logger.warn("Not a registered member!");
+            return false;
+        }
+        if (pendingFine > 0) {
+            logger.warn("Cannot borrow. Pending fine: Rs." + pendingFine);
+            return false;
+        }
+        logger.info("Member is eligible to borrow books.");
+        return true;
+    }
+
+    // Method 7: Get discount based on member type
+    public static int getDiscount(String memberType) {
+        switch (memberType) {
+            case "Senior": 
+                logger.info("Senior discount: 20%");
+                return 20;
+            case "Student": 
+                logger.info("Student discount: 15%");
+                return 15;
+            default: 
+                logger.info("Regular discount: 5%");
+                return 5;
+        }
+    }
+
+    // Method 8: Get most borrowed book
+    public static String getMostBorrowedBook(String book1, int count1, String book2, int count2) {
+        if (count1 > count2) {
+            logger.info(book1 + " is most borrowed with count: " + count1);
+            return book1;
+        } else if (count2 > count1) {
+            logger.info(book2 + " is most borrowed with count: " + count2);
+            return book2;
         } else {
-            return "FAIL";
-        }
-    }
-
-    // Method 7: Check if student passed
-    public static boolean isPassed(double marks) {
-        return marks >= 50;
-    }
-
-    // Method 8: Calculate percentage
-    public static double calculatePercentage(double marksObtained, double totalMarks) {
-        if (totalMarks == 0) {
-            logger.error("Total marks cannot be zero!");
-            return 0.0;
-        }
-        double percentage = (marksObtained / totalMarks) * 100;
-        return Math.round(percentage * 100.0) / 100.0;
-    }
-
-    // Method 9: Get top student between two students
-    public static String getTopStudent(String name1, double marks1, String name2, double marks2) {
-        if (marks1 > marks2) {
-            logger.info(name1 + " is the top student with marks: " + marks1);
-            return name1;
-        } else if (marks2 > marks1) {
-            logger.info(name2 + " is the top student with marks: " + marks2);
-            return name2;
-        } else {
-            logger.info("Both students have equal marks: " + marks1);
-            return "Both are equal";
+            logger.info("Both books equally borrowed: " + count1);
+            return "Both equally borrowed";
         }
     }
 }
