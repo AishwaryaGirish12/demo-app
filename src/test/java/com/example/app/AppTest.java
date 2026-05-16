@@ -1,4 +1,4 @@
-package com.example.library;
+package com.example.app;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -68,9 +68,14 @@ public class AppTest {
         assertEquals("Silver", App.getMemberCategory(6));
     }
 
+    @Test
+    public void testGetMemberCategory_BoundaryGold() {
+        assertEquals("Gold", App.getMemberCategory(11));
+    }
+
     // Tests for getTotalBooks
     @Test
-    public void testGetTotalBooks() {
+    public void testGetTotalBooks_Normal() {
         assertEquals(250, App.getTotalBooks(120, 80, 50));
     }
 
@@ -98,6 +103,11 @@ public class AppTest {
     @Test
     public void testFormatAuthorName_EmptyLast() {
         assertEquals("Unknown Author", App.formatAuthorName("james", ""));
+    }
+
+    @Test
+    public void testFormatAuthorName_NullFirst() {
+        assertEquals("Unknown Author", App.formatAuthorName(null, "gosling"));
     }
 
     // Tests for canBorrow
