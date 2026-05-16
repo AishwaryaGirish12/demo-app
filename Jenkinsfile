@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/AishwaryaGirish12/demo-app.git'
+                git branch: 'main', url: 'https://github.com/AishwaryaGirish12/library-app.git'
             }
         }
         stage('Build') {
@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'mvn exec:java -Dexec.mainClass="com.example.app.App"'
+                sh 'mvn exec:java -Dexec.mainClass="com.example.library.App"'
             }
         }
     }
