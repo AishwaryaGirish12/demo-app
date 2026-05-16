@@ -1,4 +1,4 @@
-package com.example.library;
+package com.example.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,38 +11,23 @@ public class App {
         logger.info("Library Management System Started.");
         System.out.println("=== Library Management System ===");
 
-        // Book availability
         System.out.println("Is 'Java Programming' available? : " + isBookAvailable("Java Programming"));
         System.out.println("Is '' available?                 : " + isBookAvailable(""));
-
-        // Fine calculation
         System.out.println("Fine for 5 days late             : Rs." + calculateFine(5));
         System.out.println("Fine for 0 days late             : Rs." + calculateFine(0));
-
-        // Member category
         System.out.println("Category (3 books)               : " + getMemberCategory(3));
         System.out.println("Category (8 books)               : " + getMemberCategory(8));
         System.out.println("Category (15 books)              : " + getMemberCategory(15));
-
-        // Book count
-        System.out.println("Total books (Fiction:120)        : " + getTotalBooks(120, 80, 50));
-
-        // Author name format
+        System.out.println("Total books (120+80+50)          : " + getTotalBooks(120, 80, 50));
         System.out.println("Format Author                    : " + formatAuthorName("james", "gosling"));
-
-        // Borrow eligibility
         System.out.println("Can borrow (no dues)             : " + canBorrow(true, 0));
         System.out.println("Can borrow (has dues)            : " + canBorrow(true, 50));
-
-        // Discount
         System.out.println("Discount for Senior              : " + getDiscount("Senior") + "%");
         System.out.println("Discount for Student             : " + getDiscount("Student") + "%");
         System.out.println("Discount for Regular             : " + getDiscount("Regular") + "%");
-
-        // Most borrowed
         System.out.println("Most Borrowed Book               : " + getMostBorrowedBook("Java", 45, "Python", 72));
-
         System.out.println("=================================");
+
         logger.info("Library Management System Completed Successfully.");
     }
 
@@ -56,7 +41,7 @@ public class App {
         return true;
     }
 
-    // Method 2: Calculate fine (Rs.5 per day)
+    // Method 2: Calculate fine Rs.5 per day
     public static double calculateFine(int daysLate) {
         if (daysLate <= 0) {
             logger.info("No fine applicable.");
@@ -67,8 +52,7 @@ public class App {
         return fine;
     }
 
-    // Method 3: Get member category based on books borrowed
-    // 1-5: Regular, 6-10: Silver, 11+: Gold
+    // Method 3: Member category - 1-5: Regular, 6-10: Silver, 11+: Gold
     public static String getMemberCategory(int booksBorrowed) {
         if (booksBorrowed >= 11) {
             logger.info("Gold member: " + booksBorrowed + " books");
@@ -82,7 +66,7 @@ public class App {
         }
     }
 
-    // Method 4: Get total books in library
+    // Method 4: Total books in library
     public static int getTotalBooks(int fiction, int nonFiction, int reference) {
         int total = fiction + nonFiction + reference;
         logger.info("Total books in library: " + total);
@@ -114,22 +98,22 @@ public class App {
         return true;
     }
 
-    // Method 7: Get discount based on member type
+    // Method 7: Discount by member type
     public static int getDiscount(String memberType) {
         switch (memberType) {
-            case "Senior": 
+            case "Senior":
                 logger.info("Senior discount: 20%");
                 return 20;
-            case "Student": 
+            case "Student":
                 logger.info("Student discount: 15%");
                 return 15;
-            default: 
+            default:
                 logger.info("Regular discount: 5%");
                 return 5;
         }
     }
 
-    // Method 8: Get most borrowed book
+    // Method 8: Most borrowed book
     public static String getMostBorrowedBook(String book1, int count1, String book2, int count2) {
         if (count1 > count2) {
             logger.info(book1 + " is most borrowed with count: " + count1);
