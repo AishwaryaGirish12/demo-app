@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 
 public class AppTest {
 
-    // Tests for isBookAvailable
+    // ---------------------------------------------------------------
+    // isBookAvailable
+    // ---------------------------------------------------------------
+
     @Test
     public void testIsBookAvailable_ValidBook() {
         assertTrue(App.isBookAvailable("Java Programming"));
@@ -21,7 +24,16 @@ public class AppTest {
         assertFalse(App.isBookAvailable(null));
     }
 
-    // Tests for calculateFine
+    @Test
+    public void testIsBookAvailable_BlankSpaces() {
+        // Whitespace-only string should also be treated as unavailable
+        assertFalse(App.isBookAvailable("   "));
+    }
+
+    // ---------------------------------------------------------------
+    // calculateFine
+    // ---------------------------------------------------------------
+
     @Test
     public void testCalculateFine_FiveDays() {
         assertEquals(25.0, App.calculateFine(5), 0.01);
@@ -42,7 +54,15 @@ public class AppTest {
         assertEquals(50.0, App.calculateFine(10), 0.01);
     }
 
-    // Tests for getMemberCategory
+    @Test
+    public void testCalculateFine_OneDay() {
+        assertEquals(5.0, App.calculateFine(1), 0.01);
+    }
+
+    // ---------------------------------------------------------------
+    // getMemberCategory
+    // ---------------------------------------------------------------
+
     @Test
     public void testGetMemberCategory_Regular() {
         assertEquals("Regular", App.getMemberCategory(3));
@@ -59,21 +79,33 @@ public class AppTest {
     }
 
     @Test
-    public void testGetMemberCategory_BoundaryRegular() {
+    public void testGetMemberCategory_BoundaryRegularUpper() {
+        // 5 is the last value that maps to Regular
         assertEquals("Regular", App.getMemberCategory(5));
     }
 
     @Test
-    public void testGetMemberCategory_BoundarySilver() {
+    public void testGetMemberCategory_BoundarySilverLower() {
+        // 6 is the first value that maps to Silver
         assertEquals("Silver", App.getMemberCategory(6));
     }
 
     @Test
-    public void testGetMemberCategory_BoundaryGold() {
+    public void testGetMemberCategory_BoundarySilverUpper() {
+        // 10 is the last value that maps to Silver
+        assertEquals("Silver", App.getMemberCategory(10));
+    }
+
+    @Test
+    public void testGetMemberCategory_BoundaryGoldLower() {
+        // 11 is the first value that maps to Gold
         assertEquals("Gold", App.getMemberCategory(11));
     }
 
-    // Tests for getTotalBooks
+    // ---------------------------------------------------------------
+    // getTotalBooks
+    // ---------------------------------------------------------------
+
     @Test
     public void testGetTotalBooks_Normal() {
         assertEquals(250, App.getTotalBooks(120, 80, 50));
@@ -89,7 +121,10 @@ public class AppTest {
         assertEquals(1000, App.getTotalBooks(500, 300, 200));
     }
 
-    // Tests for formatAuthorName
+    // ---------------------------------------------------------------
+    // formatAuthorName
+    // ---------------------------------------------------------------
+
     @Test
     public void testFormatAuthorName_Valid() {
         assertEquals("James Gosling", App.formatAuthorName("james", "gosling"));
@@ -110,7 +145,20 @@ public class AppTest {
         assertEquals("Unknown Author", App.formatAuthorName(null, "gosling"));
     }
 
-    // Tests for canBorrow
+    @Test
+    public void testFormatAuthorName_NullLast() {
+        assertEquals("Unknown Author", App.formatAuthorName("james", null));
+    }
+
+    @Test
+    public void testFormatAuthorName_BothNull() {
+        assertEquals("Unknown Author", App.formatAuthorName(null, null));
+    }
+
+    // ---------------------------------------------------------------
+    // canBorrow
+    // ---------------------------------------------------------------
+
     @Test
     public void testCanBorrow_Eligible() {
         assertTrue(App.canBorrow(true, 0));
@@ -126,7 +174,15 @@ public class AppTest {
         assertFalse(App.canBorrow(false, 0));
     }
 
-    // Tests for getDiscount
+    @Test
+    public void testCanBorrow_NotMemberAndHasFine() {
+        assertFalse(App.canBorrow(false, 100));
+    }
+
+    // ---------------------------------------------------------------
+    // getDiscount
+    // ---------------------------------------------------------------
+
     @Test
     public void testGetDiscount_Senior() {
         assertEquals(20, App.getDiscount("Senior"));
@@ -142,7 +198,16 @@ public class AppTest {
         assertEquals(5, App.getDiscount("Regular"));
     }
 
-    // Tests for getMostBorrowedBook
+    @Test
+    public void testGetDiscount_Unknown() {
+        // Any unrecognised type falls through to the default (5%)
+        assertEquals(5, App.getDiscount("VIP"));
+    }
+
+    // ---------------------------------------------------------------
+    // getMostBorrowedBook
+    // ---------------------------------------------------------------
+
     @Test
     public void testGetMostBorrowedBook_First() {
         assertEquals("Java", App.getMostBorrowedBook("Java", 80, "Python", 72));
